@@ -21,4 +21,20 @@ public class SayHelloController {
         return "Hello! What are you learning today?";
     }
 
+    @ResponseBody
+    @RequestMapping("say-hello-html")
+    public String sayHelloHtml() {
+        return """
+                <html>
+                    <head>
+                        <title>My first HTML Page</title>
+                    </head>
+                    <body>
+                        My first html page with body
+                    </body>
+                </html>
+            """;
+
+    }
+
 }
