@@ -1,9 +1,7 @@
 package com.in28minutes.srpingboot.myfirstwebapp.login;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,12 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 
     @RequestMapping("login")
-    public String goToLoginJsp(@RequestParam String name, ModelMap map) {
+    public String goToLoginJsp() {
         if (log.isInfoEnabled()) {
-            log.info(String.format("Request param is: %s", name));
+            log.info("goToLoginJsp method was called");
         }
-        map.put("name", name);
-
         return "login";
     }
 
