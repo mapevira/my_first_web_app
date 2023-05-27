@@ -1,7 +1,10 @@
 package com.in28minutes.srpingboot.myfirstwebapp.login;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,12 +20,23 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class LoginController {
 
-    @RequestMapping("login")
+    @GetMapping(value = "login")
     public String goToLoginJsp() {
         if (log.isInfoEnabled()) {
             log.info("goToLoginJsp method was called");
         }
         return "login";
+    }
+
+    @PostMapping(value = "login")
+    public String goToWelcomeJsp(@RequestParam String name, @RequestParam String password, ModelMap model) {
+        if (log.isInfoEnabled()) {
+            log.info("goToWelcomeJsp method was called");
+        }
+        model.put("name", name);
+        model.put("password", password);
+        
+        return "welcome";
     }
 
 }
