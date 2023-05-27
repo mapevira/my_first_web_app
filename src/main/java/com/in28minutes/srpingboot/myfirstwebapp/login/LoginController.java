@@ -20,6 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class LoginController {
 
+    private AuthenticationService authenticationService;
+
+    public LoginController(AuthenticationService authenticationService) {
+        super();
+        this.authenticationService = authenticationService;
+    }
+
     @GetMapping(value = "login")
     public String goToLoginJsp() {
         if (log.isInfoEnabled()) {
@@ -33,10 +40,16 @@ public class LoginController {
         if (log.isInfoEnabled()) {
             log.info("goToWelcomeJsp method was called");
         }
-        model.put("name", name);
-        model.put("password", password);
-        
-        return "welcome";
+
+        if (authenticationService.authenticate(name, password)) {
+            model.put("name", name);
+
+            return "welcome";
+        }
+
+        model.put("errorMessage", "Invalid Credentials! Please try again");
+
+        return "login";
     }
 
 }
