@@ -22,7 +22,7 @@ public class LoginController {
     @RequestMapping("login")
     public String goToLoginJsp(@RequestParam String name, ModelMap map) {
         if (log.isInfoEnabled()) {
-            log.info("Request param is: " + name);
+            log.info(String.format("Request param is: %s", name));
         }
         map.put("name", name);
 
