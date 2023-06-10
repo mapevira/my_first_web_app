@@ -8,7 +8,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
@@ -39,14 +38,17 @@ public class TodoController {
     }
 
     @GetMapping("add-todo")
-    public String showNewTodoPage() {
+    public String showNewTodoPage(ModelMap model) {
+        String username = (String) model.get("name");
+        Todo todo = new Todo(0, username, "", LocalDate.now().plusYears(1), false);
+        model.put("todo", todo);
         return "todo";
     }
 
     @PostMapping("add-todo")
-    public String addNewTodo(@RequestParam String description, ModelMap model) {
+    public String addNewTodo(ModelMap model, Todo todo) {
         String username = (String) model.get("name");
-        todoService.addTodo(username, description, LocalDate.now().plusYears(1), false);
+        todoService.addTodo(username, todo.getDescription(), LocalDate.now().plusYears(1), false);
 
         return "redirect:list-todos";
     }
