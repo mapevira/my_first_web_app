@@ -1,5 +1,7 @@
 package com.in28minutes.srpingboot.myfirstwebapp.login;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +25,16 @@ public class WelcomeController {
     @GetMapping(value = "/")
     public String goToWelcomePage(ModelMap model) {
         if (log.isInfoEnabled()) {
-            log.info("goToLoginPage method was called");
+            log.info("goToWelcomePage method was called");
         }
-        model.put("name", "in28minutes");
+        model.put("name", this.getLoggedInUsername());
         return "welcome";
+    }
+
+    private String getLoggedInUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return authentication.getName();
     }
 
 }
