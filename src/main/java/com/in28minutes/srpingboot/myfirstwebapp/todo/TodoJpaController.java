@@ -28,13 +28,12 @@ import jakarta.validation.Valid;
 @Controller
 public class TodoJpaController {
 
-    private TodoService todoService;
+    private static final String REDIRECT_LIST_TODOS = "redirect:list-todos";
 
     private TodoRepository todoRepository;
 
-    public TodoJpaController(TodoService todoService, TodoRepository todoRepository) {
+    public TodoJpaController(TodoRepository todoRepository) {
         super();
-        this.todoService = todoService;
         this.todoRepository = todoRepository;
     }
 
@@ -67,21 +66,23 @@ public class TodoJpaController {
             return "todo";
         }
         String username = getLoggedInUsername();
-        todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), false);
+        todo.setUsername(username);
 
-        return "redirect:list-todos";
+        todoRepository.save(todo);
+
+        return REDIRECT_LIST_TODOS;
     }
 
     @RequestMapping("delete-todo")
     public String deleteATodo(@RequestParam int id) {
-        todoService.deleteById(id);
+        todoRepository.deleteById(id);
 
-        return "redirect:list-todos";
+        return REDIRECT_LIST_TODOS;
     }
 
     @GetMapping("update-todo")
     public String showUpdateTodoPage(@RequestParam int id, ModelMap model) {
-        Todo todo = todoService.findById(id);
+        Todo todo = todoRepository.findById(id).get();
         model.addAttribute("todo", todo);
 
         return "todo";
@@ -95,9 +96,9 @@ public class TodoJpaController {
         String username = getLoggedInUsername();
         todo.setUsername(username);
 
-        todoService.updateTodo(todo);
+        todoRepository.save(todo);
 
-        return "redirect:list-todos";
+        return REDIRECT_LIST_TODOS;
     }
 
 }
