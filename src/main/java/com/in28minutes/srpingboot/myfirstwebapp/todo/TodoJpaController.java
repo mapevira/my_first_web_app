@@ -25,20 +25,23 @@ import jakarta.validation.Valid;
  *
  */
 @SessionAttributes("name")
-//@Controller
-public class TodoController {
+@Controller
+public class TodoJpaController {
 
     private TodoService todoService;
 
-    public TodoController(TodoService todoService) {
+    private TodoRepository todoRepository;
+
+    public TodoJpaController(TodoService todoService, TodoRepository todoRepository) {
         super();
         this.todoService = todoService;
+        this.todoRepository = todoRepository;
     }
 
     @RequestMapping("list-todos")
     public String listAllTodos(ModelMap model) {
         String username = getLoggedInUsername();
-        List<Todo> todos = todoService.findByUsername(username);
+        List<Todo> todos = todoRepository.findByUsername(username);
         model.put("todos", todos);
 
         return "listTodos";
